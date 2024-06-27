@@ -1,0 +1,131 @@
+﻿@using FishingStore.ViewModels
+@model CartViewModel
+<main class="main__content_wrapper">
+
+    <!-- Start breadcrumb section -->
+    <section class="breadcrumb__section breadcrumb__bg" style="background: url(https://kovorot.by/wp-content/themes/kovorot/assets/img/banner-desktop-1.jpg);">
+        <div class="container-fluid">
+            <div class="row row-cols-1">
+                <div class="col">
+                    <div class="breadcrumb__content">
+                        <h1 class="breadcrumb__content--title text-white mb-10">Корзина</h1>
+                        <ul class="breadcrumb__content--menu d-flex">
+                            <li class="breadcrumb__content--menu__items"><a class="text-white" href="/Home/Index">Главная</a></li>
+                            <li class="breadcrumb__content--menu__items"><a class="text-white" href="/Home/Catalog">Каталог</a></li>
+                            <li class="breadcrumb__content--menu__items"><span class="text-white">Корзина</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End breadcrumb section -->
+    <!-- cart section start -->
+    <section class="cart__section section--padding">
+        <div class="container-fluid">
+            <div class="cart__section--inner">
+                <form action="#">
+                    <h2 class="cart__title mb-40">Корзина</h2>
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="cart__table">
+                                <table class="cart__table--inner">
+                                    <thead class="cart__table--header">
+                                        <tr class="cart__table--header__items">
+                                            <th class="cart__table--header__list">Товар</th>
+                                            <th class="cart__table--header__list">Кол-во</th>
+                                            <th class="cart__table--header__list">Сумма</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="cart__table--body">
+                                        @foreach (var item in Model.Cart.CartItems)
+                                        {
+                                            <tr class="cart__table--body__items">
+                                                <td class="cart__table--body__list">
+                                                    <div class="cart__product d-flex align-items-center">
+                                                        <button class="cart__remove--btn" aria-label="search button" asp-action="Delete" asp-route-id="@item.Item.Id" type="submit"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16px" height="16px"><path d="M 4.7070312 3.2929688 L 3.2929688 4.7070312 L 10.585938 12 L 3.2929688 19.292969 L 4.7070312 20.707031 L 12 13.414062 L 19.292969 20.707031 L 20.707031 19.292969 L 13.414062 12 L 20.707031 4.7070312 L 19.292969 3.2929688 L 12 10.585938 L 4.7070312 3.2929688 z" /></svg></button>
+                                                        <div class="cart__thumbnail">
+                                                            <a asp-controller="Home" asp-action="Item" asp-route-id="@item.Item.Id"><img class="border-radius-5" src="@item.Item.TitleImagePath" alt="cart-product"></a>
+                                                        </div>
+                                                        <div class="cart__content">
+                                                            <h4 class="cart__content--title"><a asp-controller="Home" asp-action="Item" asp-route-id="@item.Item.Id" type="submit">@item.Item.Name</a></h4>
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                                <td class="cart__table--body__list">
+                                                    <div class="quantity__box">
+                                                        <label>
+                                                            <input type="number" class="quantity__number quickview__value--number" value="@item.Quantity" data-item-id="@item.Item.Id" data-item-price="@item.Item.Price" />
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                                <td class="cart__table--body__list">
+                                                    <span class="cart__price end" id="price-@item.Item.Id">@item.Item.Price * @item.Quantity BYN</span>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                                <div class="continue__shopping d-flex justify-content-between">
+                                    <a class="continue__shopping--link" href="/Home/Catalog">Продолжить просмотр</a>
+                                    <button class="continue__shopping--clear" asp-action="DeleteAll" type="submit">Очистить корзину</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="cart__summary border-radius-10">
+                                <div class="cart__summary--total mb-20">
+                                    <table class="cart__summary--total__table">
+                                        <tbody>
+                                            <tr class="cart__summary--total__list">
+                                                <td class="cart__summary--total__title text-left">Со скидкой</td>
+                                                <td class="cart__summary--amount text-right" id="total-price">@Model.TotalPrice.ToString("F2") BYN</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="cart__summary--footer">
+                                    <p class="cart__summary--footer__desc">Доставка и НДС рассчитываются на этапе оплаты</p>
+                                    <ul class="d-flex justify-content-between">
+                                        <li><a class="cart__summary--footer__btn primary__btn checkout" href="/Home/Checkout">Оплатить</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!-- cart section end -->
+
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const quantityInputs = document.querySelectorAll('.quantity__number');
+
+        function recalculateTotalPrice() {
+            let totalPrice = 0;
+            quantityInputs.forEach(input => {
+                const itemPrice = parseFloat(input.getAttribute('data-item-price'));
+                const quantity = parseInt(input.value);
+                totalPrice += itemPrice * quantity;
+            });
+            document.getElementById('total-price').innerText = totalPrice.toFixed(2) + ' BYN';
+        }
+
+        quantityInputs.forEach(input => {
+            input.addEventListener('change', function () {
+                const itemId = this.getAttribute('data-item-id');
+                const itemPrice = parseFloat(this.getAttribute('data-item-price'));
+                const quantity = parseInt(this.value);
+                const totalPrice = (itemPrice * quantity).toFixed(2);
+
+                document.getElementById('price-' + itemId).innerText = totalPrice + ' BYN';
+                recalculateTotalPrice();
+            });
+        });
+    });
+</script>

@@ -1,0 +1,326 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оплата</title>
+    <style>
+        /* CSS стили для примера */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-text {
+            color: #6c757d;
+        }
+        .primary__btn {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .primary__btn:hover {
+            background-color: #0056b3;
+        }
+        .error-message {
+            color: red;
+            font-size: 14px;
+        }
+
+        #payment-confirmation {
+            display: none;
+            text-align: center;
+            margin-top: 20px; /* Пример отступа сверху */
+        }
+
+            #payment-confirmation h2 {
+                color: green; /* Зеленый цвет текста */
+                font-size: 24px; /* Размер шрифта */
+                margin-bottom: 15px; /* Пример отступа снизу */
+            }
+
+            #payment-confirmation .primary__btn {
+                background-color: green; /* Зеленый цвет фона кнопки */
+                color: white; /* Белый цвет текста кнопки */
+                padding: 10px 20px; /* Размеры отступов внутри кнопки */
+                border-radius: 5px; /* Скругление углов */
+                text-decoration: none; /* Убираем подчеркивание у ссылки */
+                display: inline-block; /* Строчно-блочный элемент */
+                margin-top: 10px; /* Отступ сверху кнопки */
+            }
+
+                #payment-confirmation .primary__btn:hover {
+                    background-color: darkgreen; /* Цвет фона кнопки при наведении */
+                }
+    </style>
+</head>
+<body>
+    <main class="main__content_wrapper">
+
+        <!-- Start breadcrumb section -->
+        <section class="breadcrumb__section breadcrumb__bg" style="background: url(https://kovorot.by/wp-content/themes/kovorot/assets/img/banner-desktop-1.jpg);">
+            <div class="container">
+                <div class="row row-cols-1">
+                    <div class="col">
+                        <div class="breadcrumb__content">
+                            <h1 class="breadcrumb__content--title text-white mb-10">Оплата</h1>
+                            <ul class="breadcrumb__content--menu d-flex">
+                                <li class="breadcrumb__content--menu__items"><a class="text-white" href="/Home/Checkout">Главная</a></li>
+                                <li class="breadcrumb__content--menu__items"><span class="text-white">Оплата</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- End breadcrumb section -->
+        <!-- Start checkout page area -->
+        <div class="checkout__page--area section--padding">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-7 col-md-6">
+                        <div class="main checkout__mian">
+                            <form asp-controller="Home" asp-action="Index">
+                                <div class="checkout__content--step section__contact--information">
+                                    <div class="section__header checkout__section--header d-flex align-items-center justify-content-between mb-25">
+                                        <h2 class="section__header--title h3">Контактная информация</h2>
+                                    </div>
+                                    <div class="customer__information">
+                                        <div class="checkout__email--phone mb-12">
+                                            <input class="checkout__input--field border-radius-5" placeholder="Email или номер телефона" type="text" id="contact-info">
+                                        </div>
+                                        <div class="checkout__checkbox">
+                                            <input class="checkout__checkbox--input" id="check1" type="checkbox">
+                                            <span class="checkout__checkbox--checkmark"></span>
+                                            <label class="checkout__checkbox--label" for="check1">
+                                                Присылать мне новые акции и новости
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="checkout__content--step section__shipping--address">
+                                    <div class="section__header mb-25">
+                                        <h2 class="section__header--title h3">Детали оплаты</h2>
+                                    </div>
+                                    <div class="section__shipping--address__content">
+                                        <div class="form-group">
+                                            <label for="input1">Имя <span class="checkout__input--label__star">*</span></label>
+                                            <input class="form-control border-radius-5" placeholder="Имя (Необязательно)" id="input1" type="text">
+                                            <div class="error-message" id="input1-error"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="input2">Фамилия <span class="checkout__input--label__star">*</span></label>
+                                            <input class="form-control border-radius-5" placeholder="Фамилия" id="input2" type="text">
+                                            <div class="error-message" id="input2-error"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="input4">Адрес <span class="checkout__input--label__star">*</span></label>
+                                            <input class="form-control border-radius-5" placeholder="Адрес" id="input4" type="text">
+                                            <div class="error-message" id="input4-error"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="input5">Город <span class="checkout__input--label__star">*</span></label>
+                                            <input class="form-control border-radius-5" placeholder="Город" id="input5" type="text">
+                                            <div class="error-message" id="input5-error"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="country">Страна <span class="checkout__input--label__star">*</span></label>
+                                            <select class="form-control border-radius-5" id="country">
+                                                <option value="1">Россия</option>
+                                                <option value="2">Беларусь</option>
+                                                <option value="3">Казахстан</option>
+                                                <option value="4">Украина</option>
+                                                <option value="5">Польша</option>
+                                                <option value="6">Афганистан</option>
+                                                <option value="7">Литва</option>
+                                            </select>
+                                            <div class="error-message" id="country-error"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="input6">Индекс <span class="checkout__input--label__star">*</span></label>
+                                            <input class="form-control border-radius-5" placeholder="Индекс" id="input6" type="text">
+                                            <div class="error-message" id="input6-error"></div>
+                                        </div>
+                                    </div>
+                                    <div class="checkout__checkbox">
+                                        <input class="checkout__checkbox--input" id="checkbox2" type="checkbox">
+                                        <span class="checkout__checkbox--checkmark"></span>
+                                        <label class="checkout__checkbox--label" for="checkbox2">
+                                            Запомнить информацию обо мне
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="order-notes mb-20">
+                                    <label class="checkout__input--label mb-5" for="order">Комментарий к заказу <span class="checkout__input--label__star">*</span></label>
+                                    <textarea class="form-control border-radius-5" id="order" placeholder="Комментарий к заказу" spellcheck="false"></textarea>
+                                    <div class="error-message" id="order-error"></div>
+                                </div>
+                                <div class="checkout__content--step__footer d-flex align-items-center">
+                                    <button id="pay-now" class="primary__btn border-radius-5" type="button" style="display: none;">Оплатить</button>
+                                    <a class="previous__link--content" href="/Cart/Cart">Вернуться в корзину</a>
+                                </div>
+
+                                <div id="payment-confirmation" style="display: none; text-align: center;">
+                                    <h2>Оплачено!</h2>
+                                    <a href="/Cart/Cart" class="primary__btn border-radius-5">Вернуться в корзину</a>
+                                </div>
+
+
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 col-md-6">
+                        <aside class="checkout__sidebar sidebar border-radius-10">
+                            <h2 class="checkout__order--summary__title text-center mb-15">Способ оплаты</h2>
+                            <div class="payment__history mb-30">
+                                <h3 class="payment__history--title mb-20">Оплата</h3>
+                                <ul class="payment__history--inner d-flex">
+                                    <li class="payment__history--list"><button class="payment__history--link primary__btn" data-method="card">Карта</button></li>
+                                    <li class="payment__history--list"><button class="payment__history--link primary__btn" data-method="erip">ЕРИП</button></li>
+                                    <li class="payment__history--list"><button class="payment__history--link primary__btn" data-method="paypal">PayPal</button></li>
+                                </ul>
+                            </div>
+                            <!-- Card Payment Form -->
+                            <form id="payment-card" class="payment-form" style="display: none;">
+                                <div class="form-group">
+                                    <label for="card-number">Номер карты:</label>
+                                    <input type="text" id="card-number" class "form-control" required>
+                                    <small id="card-type" class="form-text text-muted"></small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="card-expiry">Срок действия:</label>
+                                    <input type="text" id="card-expiry" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="card-cvc">CVC:</label>
+                                    <input type="text" id="card-cvc" class="form-control" required>
+                                </div>
+                            </form>
+
+                            <!-- ERIP Payment Form -->
+                            <form id="payment-erip" class="payment-form" style="display: none;">
+                                <div class="form-group">
+                                    <label for="erip-account">Номер счета:</label>
+                                    <input type="text" id="erip-account" class="form-control" required>
+                                </div>
+                            </form>
+
+                            <!-- PayPal Payment Form -->
+                            <form id="payment-paypal" class="payment-form" style="display: none;">
+                                <div class="form-group">
+                                    <label for="paypal-email">Email PayPal:</label>
+                                    <input type="email" id="paypal-email" class="form-control" required>
+                                </div>
+                            </form>
+
+
+                        </aside>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End checkout page area -->
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const paymentButtons = document.querySelectorAll('.payment__history--link');
+            const paymentForms = document.querySelectorAll('.payment-form');
+            const payNowButton = document.getElementById('pay-now');
+            const paymentConfirmation = document.getElementById('payment-confirmation');
+            const cardNumberInput = document.getElementById('card-number');
+            const cardTypeDisplay = document.getElementById('card-type');
+
+            const cardPatterns = {
+                visa: /^4[0-9]{0,}$/,
+                mastercard: /^5[1-5][0-9]{0,}$/,
+                amex: /^3[47][0-9]{0,}$/,
+                discover: /^6(?:011|5[0-9]{2})[0-9]{0,}$/,
+                jcb: /^(?:2131|1800|35\d{0,})\d{0,}$/,
+                maestro: /^(?:5[06789]|6)[0-9]{0,}$/,
+                mir: /^220[0-4][0-9]{0,}$/,
+            };
+
+            function getCardType(number) {
+                for (const [type, pattern] of Object.entries(cardPatterns)) {
+                    if (pattern.test(number)) {
+                        return type;
+                    }
+                }
+                return null;
+            }
+
+            paymentButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const method = this.getAttribute('data-method');
+
+                    paymentForms.forEach(form => {
+                        form.style.display = 'none';
+                    });
+
+                    document.getElementById('payment-' + method).style.display = 'block';
+                    payNowButton.style.display = 'block';
+                    paymentConfirmation.style.display = 'none';
+                });
+            });
+
+            payNowButton.addEventListener('click', function () {
+                let allValid = true;
+                const visibleForm = document.querySelector('.payment-form[style*="block"]');
+                const inputs = visibleForm.querySelectorAll('input');
+
+                inputs.forEach(input => {
+                    if (!input.value) {
+                        allValid = false;
+                        input.style.borderColor = 'red';
+                    } else {
+                        input.style.borderColor = '';
+                    }
+                });
+
+                if (allValid) {
+                    paymentForms.forEach(form => {
+                        form.style.display = 'none';
+                    });
+
+                    payNowButton.style.display = 'none';
+                    paymentConfirmation.style.display = 'block';
+
+                    // Показываем благодарность и кнопку "Вернуться в корзину"
+                    document.getElementById('thank-you').style.display = 'block';
+                }
+            });
+
+
+            cardNumberInput.addEventListener('input', function () {
+                const cardType = getCardType(cardNumberInput.value);
+                const cardTypeText = {
+                    visa: 'Visa',
+                    mastercard: 'MasterCard',
+                    amex: 'American Express',
+                    discover: 'Discover',
+                    jcb: 'JCB',
+                    maestro: 'Maestro',
+                    mir: 'Mir'
+                };
+
+                cardTypeDisplay.innerText = cardType ? cardTypeText[cardType] : 'Unknown card type';
+            });
+        });
+    </script>
+</body>
+</html>
+

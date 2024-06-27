@@ -1,0 +1,81 @@
+﻿@using FishingStore.Model
+@model CreationModel
+<main class="main__content_wrapper">
+
+    <!-- Start breadcrumb section -->
+    <section class="breadcrumb__section breadcrumb__bg" style="background: url(https://kovorot.by/wp-content/themes/kovorot/assets/img/banner-desktop-1.jpg);
+">
+        <div class="container">
+            <div class="row row-cols-1">
+                <div class="col">
+                    <div class="breadcrumb__content">
+                        <h1 class="breadcrumb__content--title text-white mb-10">Создание товара</h1>
+                        <ul class="breadcrumb__content--menu d-flex">
+                            <li class="breadcrumb__content--menu__items"><a class="text-white" href="/Admin/Admin">Панель администратора</a></li>
+                            <li class="breadcrumb__content--menu__items"><span class="text-white">Создание товара</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End breadcrumb section -->
+    <!-- Start login section  -->
+    <div class="login__section section--padding">
+        <div class="container">
+            <form action="#">
+                <div class="login__section--inner">
+                    <div class="row row-cols-md-2 row-cols-1">
+                        <div class="col">
+                            <div class="account__login">
+                                <div class="account__login--header mb-25">
+                                    <h3 class="account__login--header__title mb-10">Новый товар</h3>
+                                    
+                                </div>
+                                <div class="account__login--inner">
+                                    <form asp-controller="Admin" asp-action="EditItem" method="post" >
+                                        <input type="hidden" asp-for="Item.Id" />
+                                        
+                                    <label>
+                                            <input class="account__login--input" placeholder="Название" type="text" asp-for="Item.Name" required>
+                                            <span asp-validation-for="ViewModel.Name"></span>
+                                    </label>
+                                    <label>
+                                            <input class="account__login--input" placeholder="Цена" name="price" type="number" asp-for="Item.Price" required>
+                                            <span asp-validation-for="ViewModel.Price"></span>
+                                    </label>
+                                    <label>
+                                            <input class="account__login--input" placeholder="Скидка (если есть)" type="number" asp-for="Item.Discount">
+                                            
+                                    </label>
+                                    <label>
+                                            <input class="account__login--input" placeholder="Фото" type="text" asp-for="Item.TitleImagePath" >
+                                            
+                                    </label>
+                                    <label>
+                                        <select asp-for="Item.CategoryId" asp-items="@Model.ViewModel.Categories">
+                                            <option>Выберите категорию</option>
+                                        </select>
+                                        
+                                        
+                                            @*ДОПИЛИТЬ СПИСОК, КОРЗИНКУ И ОДИНОЧНЫЙ АЙТЕМ*@
+                                    </label>
+                                    <label>
+                                            <textarea class="contact__form--textarea" id="input5" name="description" placeholder="Описание" asp-for="Item.Description"></textarea>
+                                            
+                                    </label>
+                                    
+                                    <input class="account__login--btn primary__btn" type="submit" value="Создать" formmethod="post">
+                                    </form>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- End login section  -->
+    
+
+</main>
